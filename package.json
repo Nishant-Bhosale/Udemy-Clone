@@ -4,11 +4,18 @@
 	"description": "A fullstack web-application which is a clone of udemy.",
 	"main": "index.js",
 	"scripts": {
-		"start": "node backend/server.js"
+		"start": "node backend/server.js",
+		"server": "nodemon backend/server",
+		"client": "npm start --prefix frontend",
+		"dev": "concurrently \"npm run server\" \"npm run client\""
 	},
 	"author": "Nishant Bhosale",
 	"license": "ISC",
 	"dependencies": {
 		"express": "^4.17.1"
+	},
+	"devDependencies": {
+		"concurrently": "^6.2.1",
+		"nodemon": "^2.0.12"
 	}
 }
