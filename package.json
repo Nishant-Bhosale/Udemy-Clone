@@ -1,14 +1,14 @@
 {
-  "name": "udemy-clone",
-  "version": "1.0.0",
-  "description": "A fullstack web-application which is a clone of udemy.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Nishant Bhosale",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+	"name": "udemy-clone",
+	"version": "1.0.0",
+	"description": "A fullstack web-application which is a clone of udemy.",
+	"main": "index.js",
+	"scripts": {
+		"start": "node backend/server.js"
+	},
+	"author": "Nishant Bhosale",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1"
+	}
 }
