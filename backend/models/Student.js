@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const { Schema } = mongoose;
 
@@ -17,13 +18,13 @@ const StudentSchema = new Schema(
 		password: {
 			type: String,
 			required: true,
+			minLength: 7,
 		},
 		website: {
 			type: String,
-			required: false,
 			unique: true,
 		},
-		headling: {
+		headline: {
 			type: String,
 		},
 		image: {
@@ -52,16 +53,48 @@ const StudentSchema = new Schema(
 	},
 );
 
-StudentSchema.pre("save", async function (next) {
-	const user = this;
+StudentSchema.statics.findStudentByCredentials = async (email, password) => {
+	try {
+		const student = await Student.findOne(email);
 
-	if (!user.isModified("password")) {
+		if (student) {
+			throw new Error("User Already Exists.");
+		}
+
+		const isPasswordCorrect = bcrypt.compare(password, student.password);
+
+		if (!isPasswordCorrect) {
+			throw new Error("Please enter correct password.");
+		}
+
+		return student;
+	} catch (error) {}
+};
+
+StudentSchema.methods.generateAuthToken = async function () {
+	const student = this;
+
+	const payload = { _id: student._id };
+
+	const token = await jwt.sign(payload, process.env.SECRET_KEY);
+
+	student.tokens = student.tokens.concat({ token });
+
+	await student.save();
+
+	return token;
+};
+
+StudentSchema.pre("save", async function (next) {
+	const student = this;
+
+	if (!student.isModified("password")) {
 		next();
 	}
 
-	const hashedPassword = await bcrypt.hash(user.password, 9);
+	const hashedPassword = await bcrypt.hash(student.password, 9);
 
-	user.password = hashedPassword;
+	student.password = hashedPassword;
 });
 
 export default mongoose.model("Student", StudentSchema);
