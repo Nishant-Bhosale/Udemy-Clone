@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "brcyptjs";
 
 const { Schema } = mongoose;
 
@@ -42,5 +43,17 @@ const StudentSchema = new Schema(
 		timestamps: true,
 	},
 );
+
+StudentSchema.pre("save", async function (next) {
+	const user = this;
+
+	if (!user.isModified("password")) {
+		next();
+	}
+
+	const hashedPassword = await bcrypt.hash(user.password, 9);
+
+	user.password = hashedPassword;
+});
 
 export default mongoose.model("Student", StudentSchema);
