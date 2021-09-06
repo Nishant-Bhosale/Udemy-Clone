@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "brcyptjs";
+import bcrypt from "bcryptjs";
 
 const { Schema } = mongoose;
 
@@ -17,6 +17,14 @@ const StudentSchema = new Schema(
 		password: {
 			type: String,
 			required: true,
+		},
+		website: {
+			type: String,
+			required: false,
+			unique: true,
+		},
+		headling: {
+			type: String,
 		},
 		image: {
 			type: Buffer,
