@@ -55,20 +55,22 @@ const StudentSchema = new Schema(
 
 StudentSchema.statics.findStudentByCredentials = async (email, password) => {
 	try {
-		const student = await Student.findOne(email);
+		const student = await Student.findOne({ email });
 
-		if (student) {
-			throw new Error("User Already Exists.");
+		if (!student) {
+			throw new Error("User does not exist.");
 		}
 
-		const isPasswordCorrect = bcrypt.compare(password, student.password);
+		const isPasswordCorrect = await bcrypt.compare(password, student.password);
 
 		if (!isPasswordCorrect) {
 			throw new Error("Please enter correct password.");
 		}
 
 		return student;
-	} catch (error) {}
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 StudentSchema.methods.generateAuthToken = async function () {
@@ -97,4 +99,5 @@ StudentSchema.pre("save", async function (next) {
 	student.password = hashedPassword;
 });
 
-export default mongoose.model("Student", StudentSchema);
+const Student = mongoose.model("Student", StudentSchema);
+export default Student;

@@ -1,13 +1,20 @@
 import mongoose from "mongoose";
 import Student from "../models/Student.js";
 
-const getStudentProfile = async (req, res) => {};
+const getAllStudentProfile = async (req, res) => {
+	try {
+		const students = await Student.find({});
+		res.json({ students });
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 const createStudent = async (req, res) => {
 	const { name, email, password, headline, website } = req.body;
 
 	try {
-		const isStudent = await Student.findOne(email);
+		const isStudent = await Student.findOne({ email });
 
 		if (isStudent) {
 			return res.status(404).json({ message: "Student already exists." });
@@ -23,8 +30,23 @@ const createStudent = async (req, res) => {
 
 		const token = await student.generateAuthToken();
 
-		res.status(201).json({ student, token });
-	} catch (error) {}
+		res.status(201).json({ name, email, website, headline, token });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send();
+	}
 };
 
-export { getStudentProfile, createStudent };
+const loginStudent = async (req, res) => {
+	const { email, password } = req.body;
+
+	const student = await Student.findStudentByCredentials(email, password);
+
+	console.log(student);
+
+	const token = student.generateAuthToken();
+
+	res.status(200).json({ student, token });
+};
+
+export { getAllStudentProfile, createStudent, loginStudent };
