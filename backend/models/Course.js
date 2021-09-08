@@ -12,8 +12,9 @@ const CourseSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	instructorName: {
-		type: String,
+	instructor: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "instructor",
 		required: true,
 	},
 	languageOfCourse: {
