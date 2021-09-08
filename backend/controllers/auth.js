@@ -16,6 +16,10 @@ const createStudent = async (req, res) => {
 	try {
 		const isStudent = await Student.findOne({ email });
 
+		if (!name) {
+			return res.status(404).json({ message: "Name is required." });
+		}
+
 		if (isStudent) {
 			return res.status(404).json({ message: "Student already exists." });
 		}
@@ -42,7 +46,9 @@ const loginStudent = async (req, res) => {
 
 	const student = await Student.findStudentByCredentials(email, password);
 
-	console.log(student);
+	if (!student) {
+		return res.status(400).json({ error: "Email or password is incorrect." });
+	}
 
 	const token = student.generateAuthToken();
 

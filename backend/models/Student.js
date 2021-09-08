@@ -22,7 +22,6 @@ const StudentSchema = new Schema(
 		},
 		website: {
 			type: String,
-			unique: true,
 		},
 		headline: {
 			type: String,
