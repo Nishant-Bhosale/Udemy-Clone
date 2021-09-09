@@ -20,9 +20,6 @@ const StudentSchema = new Schema(
 			required: true,
 			minLength: 7,
 		},
-		website: {
-			type: String,
-		},
 		headline: {
 			type: String,
 		},
