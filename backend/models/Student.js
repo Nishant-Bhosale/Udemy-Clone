@@ -25,7 +25,6 @@ const StudentSchema = new Schema(
 		},
 		isInstructor: {
 			type: Boolean,
-			required: true,
 			default: false,
 		},
 		coursesTaken: [

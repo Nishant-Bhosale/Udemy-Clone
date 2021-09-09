@@ -53,12 +53,12 @@ const loginStudent = async (req, res) => {
 	const student = await Student.findStudentByCredentials(email, password);
 
 	if (!student) {
-		return res.status(400).json({ error: "Email or password is incorrect." });
+		res.status(404).send();
+		throw new Error("Please enter correct email and password.");
 	}
 
 	const token = await student.generateAuthToken();
 
-	console.log(token);
 	res.status(200).json({
 		name: student.name,
 		email: student.email,
@@ -67,38 +67,82 @@ const loginStudent = async (req, res) => {
 	});
 };
 
+//@desc Get Student Profile
+//@route /profile/me
+//@access private
+const getStudentProfile = asyncHandler(async (req, res) => {
+	const student = await Student.findById(req.student._id);
+
+	if (!student) {
+		res.status(404);
+		throw new Error("Can't get student profile");
+	}
+
+	res.json({
+		_id: student._id,
+		name: student.name,
+		email: student.email,
+		headline: student.headline,
+		isInstructor: student.isInstructor,
+	});
+});
+
+//@desc Update Student Profile
+//@route /profile/me
+//@access private
+const updateStudentProfile = asyncHandler(async (req, res) => {
+	const student = await Student.findById(req.student._id);
+
+	if (student) {
+		student.name = req.body.name || student.name;
+		student.email = req.body.email || student.email;
+		student.headline = req.body.headline || student.headline;
+		student.isInstructor = req.body.isInstructor || student.isInstructor;
+
+		if (req.body.password) {
+			student.password = req.body.password;
+		}
+
+		await student.save();
+		res.status(200).json({
+			_id: student._id,
+			name: student.name,
+			email: student.email,
+			headline: student.headline,
+			isInstructor: student.isInstructor,
+		});
+	} else {
+		res.status(404);
+		throw new Error("Student not found");
+	}
+});
+
 // @desc Logout Student
 // @route /logout
 // @access Private
 const logoutStudent = async (req, res) => {
-	try {
-		req.student.tokens = req.student.tokens.filter((token) => {
-			return token.token != req.token;
-		});
+	req.student.tokens = req.student.tokens.filter((token) => {
+		return token.token != req.token;
+	});
 
-		await req.student.save();
-		res.status(200).send();
-	} catch (error) {
-		console.log(error);
-		res.status(500).send();
-	}
+	await req.student.save();
+	res.status(200).send();
 };
 
 // @desc Logout Student From all devices
 // @route /logout/all
 // @access Private
 const logoutStudentFromAllDevices = async (req, res) => {
-	try {
-		req.student.tokens = [];
-
-		await req.student.save();
-		res.status(200).send();
-	} catch (error) {}
+	req.student.tokens = [];
+	await req.student.save();
+	res.status(200).send();
 };
 
 export {
 	getAllStudentProfile,
 	createStudent,
+	getStudentProfile,
+	updateStudentProfile,
 	loginStudent,
 	logoutStudent,
 	logoutStudentFromAllDevices,
