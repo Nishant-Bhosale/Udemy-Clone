@@ -25,4 +25,12 @@ const authMiddleware = async (req, res, next) => {
 	}
 };
 
-export default authMiddleware;
+const instructorMiddleware = async (req, res, next) => {
+	if (req.student && req.student.isInstructor) {
+		next();
+	} else {
+		req.status(404).json({ message: "Not authorised as an Instructor" });
+	}
+};
+
+export { authMiddleware, instructorMiddleware };

@@ -1,5 +1,6 @@
 import Student from "../models/Student.js";
 import asyncHandler from "express-async-handler";
+import Instructor from "../models/Instructor.js";
 
 // @desc Get all students
 // @route /
@@ -18,7 +19,8 @@ const getAllStudentProfile = asyncHandler(async (req, res) => {
 // @route /signup
 // @access Public
 const createStudent = asyncHandler(async (req, res) => {
-	const { name, email, password, headline } = req.body;
+	const { name, email, password, headline, isInstructor, profession, aboutMe } =
+		req.body;
 
 	const isStudent = await Student.findOne({ email });
 
@@ -36,8 +38,19 @@ const createStudent = asyncHandler(async (req, res) => {
 		name,
 		email,
 		password,
+		isInstructor,
 		headline: headline ? headline : "",
 	});
+
+	if (isInstructor) {
+		const instructor = new Instructor({
+			studentID: student._id,
+			profession,
+			aboutMe,
+		});
+
+		await instructor.save();
+	}
 
 	const token = await student.generateAuthToken();
 
@@ -93,14 +106,27 @@ const getStudentProfile = asyncHandler(async (req, res) => {
 const updateStudentProfile = asyncHandler(async (req, res) => {
 	const student = await Student.findById(req.student._id);
 
+	const { name, email, headline, isInstructor, profession, aboutMe } = req.body;
+
 	if (student) {
-		student.name = req.body.name || student.name;
-		student.email = req.body.email || student.email;
-		student.headline = req.body.headline || student.headline;
-		student.isInstructor = req.body.isInstructor || student.isInstructor;
+		student.name = name || student.name;
+		student.email = email || student.email;
+		student.headline = headline || student.headline;
 
 		if (req.body.password) {
 			student.password = req.body.password;
+		}
+
+		if (isInstructor) {
+			student.isInstructor = true;
+
+			const instructor = new Instructor({
+				profession,
+				aboutMe,
+				studentID: student._id,
+			});
+
+			await instructor.save();
 		}
 
 		await student.save();
