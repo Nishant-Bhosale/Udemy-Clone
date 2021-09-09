@@ -49,9 +49,16 @@ const loginStudent = async (req, res) => {
 		return res.status(400).json({ error: "Email or password is incorrect." });
 	}
 
-	const token = student.generateAuthToken();
+	const token = await student.generateAuthToken();
 
-	res.status(200).json({ student, token });
+	console.log(token);
+	res.status(200).json({
+		name: student.name,
+		email: student.email,
+		website: student.website,
+		headline: student.headline,
+		token,
+	});
 };
 
 const logoutStudent = async (req, res) => {
@@ -77,4 +84,10 @@ const logoutStudentFromAllDevices = async (req, res) => {
 	} catch (error) {}
 };
 
-export { getAllStudentProfile, createStudent, loginStudent, logoutStudent };
+export {
+	getAllStudentProfile,
+	createStudent,
+	loginStudent,
+	logoutStudent,
+	logoutStudentFromAllDevices,
+};

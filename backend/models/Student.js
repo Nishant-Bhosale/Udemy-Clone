@@ -26,9 +26,6 @@ const StudentSchema = new Schema(
 		headline: {
 			type: String,
 		},
-		image: {
-			type: Buffer,
-		},
 		isInstructor: {
 			type: Boolean,
 			required: true,
