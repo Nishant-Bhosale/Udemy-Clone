@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Student from "../models/Student.js";
 
 const getAllStudentProfile = async (req, res) => {
@@ -55,4 +54,27 @@ const loginStudent = async (req, res) => {
 	res.status(200).json({ student, token });
 };
 
-export { getAllStudentProfile, createStudent, loginStudent };
+const logoutStudent = async (req, res) => {
+	try {
+		req.student.tokens = req.student.tokens.filter((token) => {
+			return token.token != req.token;
+		});
+
+		await req.student.save();
+		res.status(200).send();
+	} catch (error) {
+		console.log(error);
+		res.status(500).send();
+	}
+};
+
+const logoutStudentFromAllDevices = async (req, res) => {
+	try {
+		req.student.tokens = [];
+
+		await req.student.save();
+		res.status(200).send();
+	} catch (error) {}
+};
+
+export { getAllStudentProfile, createStudent, loginStudent, logoutStudent };
