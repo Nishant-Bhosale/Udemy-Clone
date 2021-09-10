@@ -29,7 +29,7 @@ const instructorMiddleware = async (req, res, next) => {
 	if (req.student && req.student.isInstructor) {
 		next();
 	} else {
-		req.status(404).json({ message: "Not authorised as an Instructor" });
+		res.status(404).json({ message: "Not authorised as an Instructor" });
 	}
 };
 

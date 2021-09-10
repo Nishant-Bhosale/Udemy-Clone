@@ -1,5 +1,6 @@
 import Instructor from "../models/Instructor.js";
 import asyncHandler from "express-async-handler";
+import Student from "../models/Student.js";
 
 //@desc Get all instructors
 //@route /instructors
@@ -29,4 +30,28 @@ const getInstructorProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getInstructorProfile, getAllInstructors };
+//@desc Delete Instructor profile
+//@route /profile/instructor/:id
+//@access Private
+const deleteInstructorProfile = asyncHandler(async (req, res) => {
+	const instructor = await Instructor.findByIdAndRemove(req.params.id);
+
+	const student = await Student.findById(req.student._id);
+
+	if (!student) {
+		res.status(404);
+		throw new Error("Could not find student profile");
+	}
+
+	student.isInstructor = false;
+
+	await student.save();
+	if (instructor) {
+		res.status(200).json({ instructor });
+	} else {
+		res.status(404);
+		throw new Error("Could not find instructor");
+	}
+});
+
+export { getInstructorProfile, getAllInstructors, deleteInstructorProfile };
