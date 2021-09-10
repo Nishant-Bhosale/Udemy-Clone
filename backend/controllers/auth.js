@@ -22,12 +22,12 @@ const createStudent = asyncHandler(async (req, res) => {
 	const { name, email, password, headline, isInstructor, profession, aboutMe } =
 		req.body;
 
-	const isStudent = await Student.findOne({ email });
-
 	if (!name) {
 		res.status(404);
 		throw new Error("Name is required");
 	}
+
+	const isStudent = await Student.findOne({ email });
 
 	if (isStudent) {
 		res.status(404);

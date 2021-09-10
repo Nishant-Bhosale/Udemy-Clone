@@ -10,8 +10,11 @@ const router = express.Router();
 
 router.get("/instructors", getAllInstructors);
 router
+	.route("/profile/instructor")
+	.get(authMiddleware, instructorMiddleware, getInstructorProfile);
+
+router
 	.route("/profile/instructor/:id")
-	.get(authMiddleware, instructorMiddleware, getInstructorProfile)
 	.delete(authMiddleware, instructorMiddleware, deleteInstructorProfile);
 
 export default router;
