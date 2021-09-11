@@ -4,6 +4,7 @@ import {
 	getInstructorProfile,
 	getAllInstructors,
 	deleteInstructorProfile,
+	updateInstructorProfile,
 } from "../controllers/instructor.js";
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router
 
 router
 	.route("/profile/instructor/:id")
+	.put(authMiddleware, instructorMiddleware, updateInstructorProfile)
 	.delete(authMiddleware, instructorMiddleware, deleteInstructorProfile);
 
 export default router;

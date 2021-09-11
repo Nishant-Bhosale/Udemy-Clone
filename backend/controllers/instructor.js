@@ -30,6 +30,18 @@ const getInstructorProfile = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Update Instructor Profile
+//@route /profile/instructor/:id
+//@access Private
+const updateInstructorProfile = asyncHandler(async (req, res) => {
+	const instructor = await Instructor.findById(req.params.id);
+	const { profession, aboutMe } = req.body;
+	if (!instructor) {
+		res.status(404);
+		throw new Error("Could not find instructor profile");
+	}
+});
+
 //@desc Delete Instructor profile
 //@route /profile/instructor/:id
 //@access Private
@@ -54,4 +66,9 @@ const deleteInstructorProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-export { getInstructorProfile, getAllInstructors, deleteInstructorProfile };
+export {
+	getInstructorProfile,
+	getAllInstructors,
+	deleteInstructorProfile,
+	updateInstructorProfile,
+};

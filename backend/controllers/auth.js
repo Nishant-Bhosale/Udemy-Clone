@@ -60,7 +60,7 @@ const createStudent = asyncHandler(async (req, res) => {
 // @desc Login Student
 // @route /login
 // @access Public
-const loginStudent = async (req, res) => {
+const loginStudent = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 
 	const student = await Student.findStudentByCredentials(email, password);
@@ -78,7 +78,7 @@ const loginStudent = async (req, res) => {
 		headline: student.headline,
 		token,
 	});
-};
+});
 
 //@desc Get Student Profile
 //@route /profile/me
@@ -146,14 +146,14 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
 // @desc Logout Student
 // @route /logout
 // @access Private
-const logoutStudent = async (req, res) => {
+const logoutStudent = asyncHandler(async (req, res) => {
 	req.student.tokens = req.student.tokens.filter((token) => {
 		return token.token != req.token;
 	});
 
 	await req.student.save();
 	res.status(200).send();
-};
+});
 
 // @desc Logout Student From all devices
 // @route /logout/all
