@@ -36,10 +36,17 @@ const getInstructorProfile = asyncHandler(async (req, res) => {
 const updateInstructorProfile = asyncHandler(async (req, res) => {
 	const instructor = await Instructor.findById(req.params.id);
 	const { profession, aboutMe } = req.body;
+
 	if (!instructor) {
 		res.status(404);
 		throw new Error("Could not find instructor profile");
 	}
+
+	instructor.profession = profession;
+	instructor.aboutMe = aboutMe;
+
+	await instructor.save();
+	res.status(200).json({ message: "Instructor Profile updated" });
 });
 
 //@desc Delete Instructor profile
