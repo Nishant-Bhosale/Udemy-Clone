@@ -17,4 +17,30 @@ const getAllCourses = asyncHandler(async (req, res) => {
 	res.status(200).json({ courses });
 });
 
-export { getAllCourses };
+const createCourse = asyncHandler(async (req, res) => {
+	const { title, description, languageOfCourse, category, price } = req.body;
+
+	const instructor = await Instructor.findOne({ studentID: req.student._id });
+
+	console.log(instructor);
+
+	if (!instructor) {
+		res.status(400);
+		throw new Error("Could not find Instructor");
+	}
+
+	const course = new Course({
+		createdBy: instructor._id,
+		title,
+		description,
+		languageOfCourse,
+		category,
+		price,
+	});
+
+	await course.save();
+
+	res.status(201).json({ course });
+});
+
+export { getAllCourses, createCourse };
