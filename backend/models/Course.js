@@ -13,9 +13,15 @@ const CourseSchema = new Schema({
 		required: true,
 	},
 	createdBy: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Instructor",
-		required: true,
+		instructorID: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Instructor",
+			required: true,
+		},
+		instructorName: {
+			type: String,
+			required: true,
+		},
 	},
 	languageOfCourse: {
 		type: String,
