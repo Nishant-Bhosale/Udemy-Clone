@@ -44,6 +44,7 @@ const createStudent = asyncHandler(async (req, res) => {
 
 	if (isInstructor) {
 		const instructor = new Instructor({
+			name: student.name,
 			studentID: student._id,
 			profession,
 			aboutMe,
@@ -121,6 +122,7 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
 			student.isInstructor = true;
 
 			const instructor = new Instructor({
+				name: student.name,
 				profession,
 				aboutMe,
 				studentID: student._id,

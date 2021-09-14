@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const InstructorSchema = new Schema({
+	name: {
+		type: String,
+		required: true,
+	},
 	profession: {
 		type: String,
 		required: true,
