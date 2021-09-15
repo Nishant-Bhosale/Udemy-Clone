@@ -7,7 +7,7 @@ import {
 } from "../controllers/course.js";
 const router = express.Router();
 
-router.get("/courses", authMiddleware, instructorMiddleware, getAllCourses);
+router.get("/courses", getAllCourses);
 
 router
 	.route("/course")

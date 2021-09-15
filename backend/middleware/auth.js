@@ -13,7 +13,7 @@ const authMiddleware = async (req, res, next) => {
 		});
 
 		if (!student) {
-			throw new Error();
+			throw new Error("Could not find student");
 		}
 
 		req.token = token;
