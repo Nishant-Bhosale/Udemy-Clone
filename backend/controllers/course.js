@@ -36,7 +36,7 @@ const createCourse = asyncHandler(async (req, res) => {
 		price,
 	});
 
-	instructor.courses.push({ courseID: course._id });
+	instructor.courses.push(course._id);
 	instructor.numberOfCourses++;
 
 	await instructor.save();
@@ -50,7 +50,6 @@ const getCourse = asyncHandler(async (req, res) => {
 		.populate("createdBy")
 		.exec();
 
-	console.log(course);
 	if (!course) {
 		res.status(400);
 		throw new Error("Could not find course");

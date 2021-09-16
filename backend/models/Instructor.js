@@ -22,10 +22,8 @@ const InstructorSchema = new Schema({
 	},
 	courses: [
 		{
-			courseID: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "Course",
-			},
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Course",
 		},
 	],
 	numberOfCourses: {
