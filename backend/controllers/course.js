@@ -22,17 +22,13 @@ const createCourse = asyncHandler(async (req, res) => {
 
 	const instructor = await Instructor.findOne({ studentID: req.student._id });
 
-	console.log(instructor);
-
 	if (!instructor) {
 		res.status(400);
 		throw new Error("Could not find Instructor");
 	}
 
 	const course = new Course({
-		createdBy: {
-			instructorID: instructor._id,
-		},
+		createdBy: instructor._id,
 		title,
 		description,
 		languageOfCourse,
@@ -50,17 +46,15 @@ const createCourse = asyncHandler(async (req, res) => {
 });
 
 const getCourse = asyncHandler(async (req, res) => {
-	const course = await Course.findById(req.params.id);
+	const course = await Course.findById(req.params.id)
+		.populate("createdBy")
+		.exec();
 
 	console.log(course);
 	if (!course) {
 		res.status(400);
 		throw new Error("Could not find course");
 	}
-
-	await course.populate("createdBy").execPopulate();
-
-	console.log(course);
 
 	res.status(200).json({ course });
 });

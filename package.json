@@ -19,7 +19,7 @@
 		"express": "^4.17.1",
 		"express-async-handler": "^1.1.4",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.0.4"
+		"mongoose": "^6.0.6"
 	},
 	"devDependencies": {
 		"concurrently": "^6.2.1",
