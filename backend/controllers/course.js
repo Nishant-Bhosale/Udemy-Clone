@@ -23,6 +23,11 @@ const getAllCourses = asyncHandler(async (req, res) => {
 const createCourse = asyncHandler(async (req, res) => {
 	const { title, description, languageOfCourse, category, price } = req.body;
 
+	if (price > 1000) {
+		res.status(400);
+		throw new Error("Price should be less than 1000");
+	}
+
 	const instructor = await Instructor.findOne({ studentID: req.student._id });
 
 	if (!instructor) {

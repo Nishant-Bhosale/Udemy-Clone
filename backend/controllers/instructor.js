@@ -73,6 +73,9 @@ const deleteInstructorProfile = asyncHandler(async (req, res) => {
 	}
 });
 
+//@desc Get Courses made by Instructor
+//@route /courses/all/:id
+//@access Private
 const getInstructorCourses = asyncHandler(async (req, res) => {
 	const instructor = await Instructor.findById(req.params.id)
 		.populate({ path: "courses", select: "-createdBy" })

@@ -36,6 +36,7 @@ const CourseSchema = new Schema({
 	price: {
 		type: Number,
 		required: true,
+		max: 1000,
 	},
 	courseImage: {
 		type: Buffer,
