@@ -74,16 +74,12 @@ const deleteInstructorProfile = asyncHandler(async (req, res) => {
 });
 
 const getInstructorCourses = asyncHandler(async (req, res) => {
-	const instructor = await Instructor.findById(req.params.id);
+	const instructor = await Instructor.findById(req.params.id)
+		.populate({ path: "courses", select: "-createdBy" })
+		.exec();
 
-	// const courses = instructor.courses.forEach((course) => {
-	// 	return course.populate("courseID").exec();
-	// });
-
-	console.log(instructor.courses[0]);
-	const co = await instructor.courses[0].populate("courseID").exec();
-	console.log(co);
-	// res.status(200).json({ courses });
+	console.log(instructor.courses);
+	res.status(200).json({ courses: instructor.courses });
 });
 
 export {
