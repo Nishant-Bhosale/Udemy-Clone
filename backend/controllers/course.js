@@ -74,4 +74,8 @@ const getCourse = asyncHandler(async (req, res) => {
 
 	res.status(200).json({ course });
 });
+
+//@ desc Review a course
+//@ route /course/id
+//@ access Private
 export { getAllCourses, createCourse, getCourse };

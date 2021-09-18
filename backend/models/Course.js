@@ -48,6 +48,12 @@ const CourseSchema = new Schema({
 			},
 		},
 	],
+	courseReviews: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "CourseReview",
+		},
+	],
 });
 
 const Course = mongoose.model("Course", CourseSchema);
