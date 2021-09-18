@@ -76,6 +76,39 @@ const getCourse = asyncHandler(async (req, res) => {
 });
 
 //@ desc Review a course
-//@ route /course/id
+//@ route /course/id/reviews
 //@ access Private
-export { getAllCourses, createCourse, getCourse };
+const addReview = asyncHandler(async (req, res) => {
+	const { reviewText, rating } = req.body;
+
+	const course = await Course.findById(req.params.id);
+
+	console.log(course);
+	const reviewed = course.courseReviews.find((review) => {
+		return review.user.toString() === req.student._id.toString();
+	});
+
+	if (reviewed) {
+		res.status(404);
+		throw new Error("Cannot review more than once");
+	}
+
+	const review = {
+		name: req.student.name,
+		reviewText,
+		rating,
+		user: req.student._id,
+	};
+
+	const instructor = await Instructor.findById(course.createdBy);
+	console.log(instructor);
+
+	course.courseReviews.push(review);
+	instructor.numberOfReviews += 1;
+
+	await course.save();
+	await instructor.save();
+	res.status(201).json({ message: "Course Reviewed" });
+});
+
+export { getAllCourses, createCourse, getCourse, addReview };

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import courseReviewSchema from "./CourseReview.js";
 
 const { Schema } = mongoose;
 
@@ -48,12 +49,7 @@ const CourseSchema = new Schema({
 			},
 		},
 	],
-	courseReviews: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "CourseReview",
-		},
-	],
+	courseReviews: [courseReviewSchema],
 });
 
 const Course = mongoose.model("Course", CourseSchema);

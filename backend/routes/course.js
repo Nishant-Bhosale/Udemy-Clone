@@ -4,6 +4,7 @@ import {
 	getAllCourses,
 	createCourse,
 	getCourse,
+	addReview,
 } from "../controllers/course.js";
 const router = express.Router();
 
@@ -16,4 +17,6 @@ router
 router
 	.route("/course/:id")
 	.get(authMiddleware, instructorMiddleware, getCourse);
+
+router.route("/course/:id/reviews").post(authMiddleware, addReview);
 export default router;
