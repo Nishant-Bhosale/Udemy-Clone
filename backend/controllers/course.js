@@ -111,4 +111,14 @@ const addReview = asyncHandler(async (req, res) => {
 	res.status(201).json({ message: "Course Reviewed" });
 });
 
-export { getAllCourses, createCourse, getCourse, addReview };
+//@ desc Delete all reviews of a course
+//@ route /course/id/reviews
+//@ access  Private
+const deleteReviews = asyncHandler(async (req, res) => {
+	const course = await Course.findById(req.params.id);
+	course.courseReviews = [];
+	await course.save();
+	res.status(200).json({ message: "Deleted Successfully" });
+});
+
+export { getAllCourses, createCourse, getCourse, addReview, deleteReviews };
