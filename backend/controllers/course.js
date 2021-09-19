@@ -11,7 +11,7 @@ const getAllCourses = asyncHandler(async (req, res) => {
 		{},
 		{ title: 1, createdBy: 1, price: 1, courseImage: 1, authorName: 1 },
 	);
-	//Get only specific fields from mongodb
+	//Get specific fields from mongodb
 
 	if (courses.length === 0) {
 		res.status(400);
@@ -88,7 +88,6 @@ const addReview = asyncHandler(async (req, res) => {
 
 	const course = await Course.findById(req.params.id);
 
-	console.log(course);
 	const reviewed = course.courseReviews.find((review) => {
 		return review.user.toString() === req.student._id.toString();
 	});
@@ -106,9 +105,15 @@ const addReview = asyncHandler(async (req, res) => {
 	};
 
 	const instructor = await Instructor.findById(course.createdBy);
-	console.log(instructor);
 
 	course.courseReviews.push(review);
+
+	course.avgRating =
+		course.courseReviews.reduce((acc, review) => {
+			return review.rating + acc;
+		}, 0) / course.courseReviews.length;
+
+	course.numOfRatings++;
 	instructor.numberOfReviews += 1;
 
 	await course.save();
