@@ -15,9 +15,7 @@ router
 	.route("/course")
 	.post(authMiddleware, instructorMiddleware, createCourse);
 
-router
-	.route("/course/:id")
-	.get(authMiddleware, instructorMiddleware, getCourse);
+router.route("/course/:id").get(getCourse);
 
 router
 	.route("/course/:id/reviews")

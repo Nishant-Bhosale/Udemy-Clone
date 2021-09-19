@@ -7,7 +7,11 @@ import Instructor from "../models/Instructor.js";
 //@ access Public/ for testing only
 
 const getAllCourses = asyncHandler(async (req, res) => {
-	const courses = await Course.find({});
+	const courses = await Course.find(
+		{},
+		{ title: 1, createdBy: 1, price: 1, courseImage: 1, authorName: 1 },
+	);
+	//Get only specific fields from mongodb
 
 	if (courses.length === 0) {
 		res.status(400);
@@ -38,6 +42,7 @@ const createCourse = asyncHandler(async (req, res) => {
 	const course = new Course({
 		createdBy: instructor._id,
 		title,
+		authorName: req.student.name,
 		description,
 		languageOfCourse,
 		category,

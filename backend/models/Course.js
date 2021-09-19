@@ -18,6 +18,10 @@ const CourseSchema = new Schema({
 		ref: "Instructor",
 		required: true,
 	},
+	authorName: {
+		type: String,
+		required: true,
+	},
 	languageOfCourse: {
 		type: String,
 		default: "English",
