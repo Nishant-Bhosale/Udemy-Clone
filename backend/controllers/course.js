@@ -1,11 +1,11 @@
 import Course from "../models/Course.js";
 import asyncHandler from "express-async-handler";
 import Instructor from "../models/Instructor.js";
+import multer from "multer";
 
 //@ desc Get all courses
 //@ route /courses
 //@ access Public/ for testing only
-
 const getAllCourses = asyncHandler(async (req, res) => {
 	const courses = await Course.find(
 		{},
@@ -121,14 +121,21 @@ const addReview = asyncHandler(async (req, res) => {
 	res.status(201).json({ message: "Course Reviewed" });
 });
 
-//@ desc Delete all reviews of a course
-//@ route /course/id/reviews
-//@ access  Private
-const deleteReviews = asyncHandler(async (req, res) => {
+//@ desc Add course Image
+//@ route /course/id/image
+//@ access Private
+const addCourseImage = asyncHandler(async (req, res) => {
 	const course = await Course.findById(req.params.id);
-	course.courseReviews = [];
+
+	if (course.courseImage) {
+		res.status(400);
+		throw new Error("Image already exists");
+	}
+
+	course.courseImage = req.file.buffer;
+
 	await course.save();
-	res.status(200).json({ message: "Deleted Successfully" });
+	res.status(201).json({ message: "Image added successfully." });
 });
 
-export { getAllCourses, createCourse, getCourse, addReview, deleteReviews };
+export { getAllCourses, createCourse, getCourse, addReview, addCourseImage };
