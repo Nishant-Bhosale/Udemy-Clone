@@ -9,10 +9,24 @@ import multer from "multer";
 const getAllCourses = asyncHandler(async (req, res) => {
 	const courses = await Course.find(
 		{},
-		{ title: 1, createdBy: 1, price: 1, courseImage: 1, authorName: 1 },
+		{
+			title: 1,
+			createdBy: 1,
+			price: 1,
+			courseImage: 1,
+			authorName: 1,
+			courseImage: 1,
+		},
 	);
 	//Get specific fields from mongodb
 
+	console.log(courses);
+
+	// courses.forEach((course) => {
+	// 	Buffer.from(course.courseImage.data);
+	// });
+
+	console.log(courses);
 	if (courses.length === 0) {
 		res.status(400);
 		throw new Error("No courses found");
