@@ -1,9 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import studentRouter from "./routes/auth.js";
+import authRouter from "./routes/auth.js";
 import instructorRouter from "./routes/instructor.js";
 import courseRouter from "./routes/course.js";
+import studentRouter from "./routes/student.js";
 import { errorMiddleware, notFound } from "./middleware/errorMiddleware.js";
 
 const PORT = 5000 || process.env.PORT;
@@ -15,9 +16,10 @@ const app = express();
 
 app.use(express.json());
 
-app.use(studentRouter);
+app.use(authRouter);
 app.use(courseRouter);
 app.use(instructorRouter);
+app.use(studentRouter);
 
 app.use(notFound);
 app.use(errorMiddleware);
