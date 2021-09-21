@@ -51,7 +51,6 @@ const CourseSchema = new Schema({
 	},
 	courseImage: {
 		type: Buffer,
-		contentType: String,
 	},
 	courseRequirements: [
 		{

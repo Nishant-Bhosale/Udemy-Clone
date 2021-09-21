@@ -22,11 +22,6 @@ const getAllCourses = asyncHandler(async (req, res) => {
 
 	console.log(courses);
 
-	// courses.forEach((course) => {
-	// 	Buffer.from(course.courseImage.data);
-	// });
-
-	console.log(courses);
 	if (courses.length === 0) {
 		res.status(400);
 		throw new Error("No courses found");
@@ -70,6 +65,23 @@ const createCourse = asyncHandler(async (req, res) => {
 	await course.save();
 
 	res.status(201).json({ course });
+});
+
+//@ desc Add course Image
+//@ route /course/id/image
+//@ access Private
+const addCourseImage = asyncHandler(async (req, res) => {
+	const course = await Course.findById(req.params.id);
+
+	if (course.courseImage) {
+		res.status(400);
+		throw new Error("Image already exists");
+	}
+
+	course.courseImage = req.file.buffer;
+
+	await course.save();
+	res.status(201).json({ message: "Image added successfully." });
 });
 
 //@ desc Get A specific course
@@ -133,23 +145,6 @@ const addReview = asyncHandler(async (req, res) => {
 	await course.save();
 	await instructor.save();
 	res.status(201).json({ message: "Course Reviewed" });
-});
-
-//@ desc Add course Image
-//@ route /course/id/image
-//@ access Private
-const addCourseImage = asyncHandler(async (req, res) => {
-	const course = await Course.findById(req.params.id);
-
-	if (course.courseImage) {
-		res.status(400);
-		throw new Error("Image already exists");
-	}
-
-	course.courseImage = req.file.buffer;
-
-	await course.save();
-	res.status(201).json({ message: "Image added successfully." });
 });
 
 export { getAllCourses, createCourse, getCourse, addReview, addCourseImage };

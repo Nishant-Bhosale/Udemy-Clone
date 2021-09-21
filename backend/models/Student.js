@@ -31,10 +31,8 @@ const StudentSchema = new Schema(
 		},
 		coursesTaken: [
 			{
-				course: {
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "Course",
-				},
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Course",
 			},
 		],
 		tokens: [
