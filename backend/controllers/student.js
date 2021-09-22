@@ -13,6 +13,8 @@ const purchaseCourse = asyncHandler(async (req, res) => {
 	console.log(course.title);
 
 	console.log(req.student);
+	req.student.coursesTaken.push(course);
+	await req.student.save();
 	res.status(200);
 });
 
