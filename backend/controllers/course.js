@@ -114,11 +114,16 @@ const addReview = asyncHandler(async (req, res) => {
 
 	const course = await Course.findById(req.params.id);
 
-	const purchasedCourse = req.student.coursesTaken.find((courseId) => {
-		return courseId.toString() === req.params.id.toString();
-	});
+	// const notPurchasedCourse = req.student.coursesTaken.find((courseId) => {
+	// 	return courseId.toString() === req.params.id.toString();
+	// });
 
-	if (purchasedCourse) {
+	const purchasedCourse = findCourseInPurchasedCourses(
+		req.student,
+		req.params.id,
+	);
+
+	if (!purchasedCourse) {
 		res.status(404);
 		throw new Error("Buy the course to review it.");
 	}
@@ -156,4 +161,19 @@ const addReview = asyncHandler(async (req, res) => {
 	res.status(201).json({ message: "Course Reviewed" });
 });
 
-export { getAllCourses, createCourse, getCourse, addReview, addCourseImage };
+//Helper function
+const findCourseInPurchasedCourses = (student, id) => {
+	const res = student.coursesTaken.find((courseId) => {
+		return courseId.toString() === id.toString();
+	});
+	return res;
+};
+
+export {
+	getAllCourses,
+	createCourse,
+	getCourse,
+	addReview,
+	addCourseImage,
+	findCourseInPurchasedCourses,
+};
