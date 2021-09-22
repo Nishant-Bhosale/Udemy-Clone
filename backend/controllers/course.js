@@ -114,6 +114,15 @@ const addReview = asyncHandler(async (req, res) => {
 
 	const course = await Course.findById(req.params.id);
 
+	const purchasedCourse = req.student.coursesTaken.find((courseId) => {
+		return courseId.toString() === req.params.id.toString();
+	});
+
+	if (purchasedCourse) {
+		res.status(404);
+		throw new Error("Buy the course to review it.");
+	}
+
 	const reviewed = course.courseReviews.find((review) => {
 		return review.user.toString() === req.student._id.toString();
 	});
