@@ -114,10 +114,6 @@ const addReview = asyncHandler(async (req, res) => {
 
 	const course = await Course.findById(req.params.id);
 
-	// const notPurchasedCourse = req.student.coursesTaken.find((courseId) => {
-	// 	return courseId.toString() === req.params.id.toString();
-	// });
-
 	const purchasedCourse = findCourseInPurchasedCourses(
 		req.student,
 		req.params.id,
@@ -161,6 +157,34 @@ const addReview = asyncHandler(async (req, res) => {
 	res.status(201).json({ message: "Course Reviewed" });
 });
 
+//@ desc Update a course review
+//@ route /course/id/reviews
+//@ access Private
+const updateReview = asyncHandler(async (req, res) => {
+	const { reviewText, rating } = req.body;
+
+	const course = await Course.findById(req.params.id);
+
+	const purchasedCourse = findCourseInPurchasedCourses(
+		req.student,
+		req.params.id,
+	);
+
+	if (!purchasedCourse) {
+		res.status(404);
+		throw new Error("Buy the course to review it.");
+	}
+
+	const reviewed = course.courseReviews.find((review) => {
+		return review.user.toString() === req.student._id.toString();
+	});
+
+	if (!reviewed) {
+		res.status(404);
+		throw new Error("Review not found.");
+	}
+});
+
 //Helper function
 const findCourseInPurchasedCourses = (student, id) => {
 	const res = student.coursesTaken.find((courseId) => {
@@ -174,6 +198,7 @@ export {
 	createCourse,
 	getCourse,
 	addReview,
+	updateReview,
 	addCourseImage,
 	findCourseInPurchasedCourses,
 };

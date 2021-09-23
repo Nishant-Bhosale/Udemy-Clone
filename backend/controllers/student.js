@@ -19,8 +19,6 @@ const removeAllCourses = asyncHandler(async (req, res) => {
 const purchaseCourse = asyncHandler(async (req, res) => {
 	const course = await Course.findById(req.params.id);
 
-	console.log(req.params.id);
-
 	if (!course) {
 		res.status(400);
 		throw new Error("Course not found.");
@@ -37,7 +35,9 @@ const purchaseCourse = asyncHandler(async (req, res) => {
 	}
 
 	req.student.coursesTaken.push(course);
+
 	await req.student.save();
+
 	res.status(200).json({ message: "Course purchased successfully" });
 });
 
