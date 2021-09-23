@@ -183,6 +183,21 @@ const updateReview = asyncHandler(async (req, res) => {
 		res.status(404);
 		throw new Error("Review not found.");
 	}
+
+	course.courseReviews.updateOne(
+		{ user: req.student._id.toString() },
+		{
+			$set: {
+				reviewText,
+				rating,
+				name: req.student.name,
+				user: req.student._id,
+			},
+		},
+	);
+
+	await course.save();
+	res.status(200).json({ message: "Review updated" });
 });
 
 //Helper function

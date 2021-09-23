@@ -6,19 +6,10 @@ import {
 	getCourse,
 	addReview,
 	addCourseImage,
+	updateReview,
 } from "../controllers/course.js";
 import multer from "multer";
 const router = express.Router();
-
-router.get("/courses", getAllCourses);
-
-router
-	.route("/course")
-	.post(authMiddleware, instructorMiddleware, createCourse);
-
-router.route("/course/:id").get(getCourse);
-
-router.route("/course/:id/reviews").post(authMiddleware, addReview);
 
 //Use multer to upload Image
 const uploadImage = multer({
@@ -38,6 +29,19 @@ const uploadImage = multer({
 		cb(undefined, true);
 	},
 });
+
+router.get("/courses", getAllCourses);
+
+router
+	.route("/course")
+	.post(authMiddleware, instructorMiddleware, createCourse);
+
+router.route("/course/:id").get(getCourse);
+
+router
+	.route("/course/:id/reviews")
+	.post(authMiddleware, addReview)
+	.put(authMiddleware, updateReview);
 
 router
 	.route("/course/:id/image")
