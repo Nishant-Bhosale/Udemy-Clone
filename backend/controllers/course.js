@@ -160,39 +160,20 @@ const addReview = asyncHandler(async (req, res) => {
 const updateReview = asyncHandler(async (req, res) => {
 	const { reviewText, rating } = req.body;
 
-	const course = await Course.findById(req.params.id);
+	const course = await Course.findOneAndReplace();
 
-	const purchasedCourse = findCourseInPurchasedCourses(
-		req.student,
-		req.params.id,
-	);
-
-	if (!purchasedCourse) {
-		res.status(404);
-		throw new Error("Buy the course to review it.");
-	}
-
-	const reviewed = course.courseReviews.find((review) => {
-		return review.user.toString() === req.student._id.toString();
-	});
-
-	if (!reviewed) {
-		res.status(404);
-		throw new Error("Review not found.");
-	}
-
-	course.courseReviews.updateOne(
-		{ user: req.student._id.toString() },
-		{
-			$set: {
-				reviewText,
-				rating,
-				name: req.student.name,
-				user: req.student._id,
-			},
-		},
-	);
-
+	// req.params.id,
+	// 	{
+	// 		"$push": {
+	// 			"courseReviews": {
+	// 				reviewText,
+	// 				rating,
+	// 				name: req.student.name,
+	// 				user: req.student._id,
+	// 			},
+	// 		},
+	// 	},
+	// 	{ "new": true, "upsert": true },
 	await course.save();
 	res.status(200).json({ message: "Review updated" });
 });
