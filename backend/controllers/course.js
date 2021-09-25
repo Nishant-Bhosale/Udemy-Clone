@@ -1,7 +1,6 @@
 import Course from "../models/Course.js";
 import asyncHandler from "express-async-handler";
 import Instructor from "../models/Instructor.js";
-import multer from "multer";
 
 //@ desc Get all courses
 //@ route /courses
@@ -19,8 +18,6 @@ const getAllCourses = asyncHandler(async (req, res) => {
 		},
 	);
 	//Get specific fields from mongodb
-
-	console.log(courses);
 
 	if (courses.length === 0) {
 		res.status(400);
