@@ -154,30 +154,6 @@ const addReview = asyncHandler(async (req, res) => {
 	res.status(201).json({ message: "Course Reviewed" });
 });
 
-//@ desc Update a course review
-//@ route /course/id/reviews
-//@ access Private
-const updateReview = asyncHandler(async (req, res) => {
-	const { reviewText, rating } = req.body;
-
-	const course = await Course.findOneAndReplace();
-
-	// req.params.id,
-	// 	{
-	// 		"$push": {
-	// 			"courseReviews": {
-	// 				reviewText,
-	// 				rating,
-	// 				name: req.student.name,
-	// 				user: req.student._id,
-	// 			},
-	// 		},
-	// 	},
-	// 	{ "new": true, "upsert": true },
-	await course.save();
-	res.status(200).json({ message: "Review updated" });
-});
-
 //Helper function
 const findCourseInPurchasedCourses = (student, id) => {
 	const res = student.coursesTaken.find((courseId) => {
@@ -191,7 +167,6 @@ export {
 	createCourse,
 	getCourse,
 	addReview,
-	updateReview,
 	addCourseImage,
 	findCourseInPurchasedCourses,
 };

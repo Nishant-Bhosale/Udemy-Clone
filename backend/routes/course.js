@@ -6,7 +6,6 @@ import {
 	getCourse,
 	addReview,
 	addCourseImage,
-	updateReview,
 } from "../controllers/course.js";
 import multer from "multer";
 const router = express.Router();
@@ -38,10 +37,7 @@ router
 
 router.route("/course/:id").get(getCourse);
 
-router
-	.route("/course/:id/reviews")
-	.post(authMiddleware, addReview)
-	.put(authMiddleware, updateReview);
+router.route("/course/:id/reviews").post(authMiddleware, addReview);
 
 router
 	.route("/course/:id/image")
