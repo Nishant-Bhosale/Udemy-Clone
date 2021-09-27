@@ -121,9 +121,7 @@ const addReview = asyncHandler(async (req, res) => {
 		throw new Error("Buy the course to review it.");
 	}
 
-	const reviewed = course.courseReviews.find((review) => {
-		return review.user.toString() === req.student._id.toString();
-	});
+	const reviewed = findReviewedCourses(course, req.student._id);
 
 	if (reviewed) {
 		res.status(404);
@@ -154,10 +152,57 @@ const addReview = asyncHandler(async (req, res) => {
 	res.status(201).json({ message: "Course Reviewed" });
 });
 
-//Helper function
+//@ desc Remove a Review
+//@ route /course/id/reviews
+//@ access Private
+const deleteReview = asyncHandler(async (req, res) => {
+	const course = await Course.findById(req.params.id);
+
+	console.log(course);
+	const purchasedCourse = findCourseInPurchasedCourses(
+		req.student,
+		req.params.id,
+	);
+
+	if (!purchasedCourse) {
+		res.status(404);
+		throw new Error("Buy the course to review it.");
+	}
+
+	const reviewed = findReviewedCourses(course, req.params._id);
+
+	if (!reviewed) {
+		res.status(404);
+		throw new Error("Review not found");
+	}
+
+	course.courseReviews.filter((course) => {
+		console.log(course._id);
+		return course._id.toString() !== req.params._id.toString();
+	});
+
+	await course.save();
+	res.status(200).json({ message: "Deleted Successfully" });
+});
+
+const deleteAllReviews = asyncHandler(async (req, res) => {
+	const course = await Course.findById(req.params.id);
+
+	course.courseReviews = [];
+	await course.save();
+});
+
+//Helper functions
 const findCourseInPurchasedCourses = (student, id) => {
 	const res = student.coursesTaken.find((courseId) => {
 		return courseId.toString() === id.toString();
+	});
+	return res;
+};
+
+const findReviewedCourses = (course, id) => {
+	const res = course.courseReviews.find((review) => {
+		return review.user.toString() === id.toString();
 	});
 	return res;
 };
@@ -167,6 +212,8 @@ export {
 	createCourse,
 	getCourse,
 	addReview,
+	deleteReview,
+	deleteAllReviews,
 	addCourseImage,
 	findCourseInPurchasedCourses,
 };

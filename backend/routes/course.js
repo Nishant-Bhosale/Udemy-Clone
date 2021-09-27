@@ -5,6 +5,8 @@ import {
 	createCourse,
 	getCourse,
 	addReview,
+	deleteAllReviews,
+	deleteReview,
 	addCourseImage,
 } from "../controllers/course.js";
 import multer from "multer";
@@ -37,8 +39,12 @@ router
 
 router.route("/course/:id").get(getCourse);
 
-router.route("/course/:id/reviews").post(authMiddleware, addReview);
+router
+	.route("/course/:id/reviews")
+	.post(authMiddleware, addReview)
+	.delete(authMiddleware, deleteReview);
 
+router.route("/course/reviews/:id").delete(deleteAllReviews);
 router
 	.route("/course/:id/image")
 	.post(
