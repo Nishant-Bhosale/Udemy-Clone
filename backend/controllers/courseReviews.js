@@ -59,8 +59,6 @@ const addReview = asyncHandler(async (req, res) => {
 //@ route /course/id/reviews
 //@ access Private
 const deleteReview = asyncHandler(async (req, res) => {
-	const course = await Course.findById(req.params.id);
-
 	const purchasedCourse = findCourseInPurchasedCourses(
 		req.student,
 		req.params.id,
@@ -71,6 +69,14 @@ const deleteReview = asyncHandler(async (req, res) => {
 		throw new Error("Buy the course to review it.");
 	}
 
+	const course = await Course.findByIdAndUpdate(
+		req.params.id,
+		{
+			$pull: { courseReviews: { user: req.student._id } },
+		},
+		{ new: true },
+	);
+
 	const reviewed = findReviewedCourses(course, req.student._id);
 
 	if (!reviewed) {
@@ -78,12 +84,6 @@ const deleteReview = asyncHandler(async (req, res) => {
 		throw new Error("Review not found");
 	}
 
-	console.log("LOADING");
-	const filtered = course.courseReviews.filter((courseReview) => {
-		return courseReview.user.toString() === req.student._id.toString();
-	});
-
-	course.courseReviews = filtered;
 	await course.save();
 	res.status(200).json({ message: "Deleted Successfully" });
 });
