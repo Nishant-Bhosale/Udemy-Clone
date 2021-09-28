@@ -7,9 +7,12 @@ const findCourseInPurchasedCourses = (student, id) => {
 };
 
 const findReviewedCourses = (course, id) => {
+	console.log(course);
+	console.log(id);
 	const res = course.courseReviews.find((review) => {
 		return review.user.toString() === id.toString();
 	});
+	console.log(res);
 	return res;
 };
 

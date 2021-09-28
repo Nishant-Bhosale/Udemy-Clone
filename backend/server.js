@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.js";
 import instructorRouter from "./routes/instructor.js";
 import courseRouter from "./routes/course.js";
 import studentRouter from "./routes/student.js";
+import reviewRouter from "./routes/courseReviews.js";
 import { errorMiddleware, notFound } from "./middleware/errorMiddleware.js";
 
 const PORT = 5000 || process.env.PORT;
@@ -20,6 +21,7 @@ app.use(authRouter);
 app.use(courseRouter);
 app.use(instructorRouter);
 app.use(studentRouter);
+app.use(reviewRouter);
 
 app.use(notFound);
 app.use(errorMiddleware);
