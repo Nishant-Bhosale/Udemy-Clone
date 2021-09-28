@@ -1,6 +1,5 @@
-import Student from "../models/Student.js";
 import asyncHandler from "express-async-handler";
-import { findCourseInPurchasedCourses } from "./course.js";
+import { findCourseInPurchasedCourses } from "../utils/helperFunctions.js";
 import Course from "../models/Course.js";
 
 //@ desc Remove all courses

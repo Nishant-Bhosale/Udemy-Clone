@@ -29,12 +29,11 @@ const uploadImage = multer({
 });
 
 router.get("/courses", getAllCourses);
+router.route("/course/:id").get(getCourse);
 
 router
 	.route("/course")
 	.post(authMiddleware, instructorMiddleware, createCourse);
-
-router.route("/course/:id").get(getCourse);
 
 router
 	.route("/course/:id/image")

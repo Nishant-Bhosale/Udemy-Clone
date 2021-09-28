@@ -10,7 +10,6 @@ import {
 	logoutStudentFromAllDevices,
 } from "../controllers/auth.js";
 
-import { getInstructorCourses } from "../controllers/instructor.js";
 const router = express.Router();
 
 router.get("/all", getAllStudentProfile);
@@ -22,7 +21,5 @@ router
 	.route("/profile/me")
 	.get(authMiddleware, getStudentProfile)
 	.put(authMiddleware, updateStudentProfile);
-
-router.route("/courses/all/:id").get(getInstructorCourses);
 
 export default router;

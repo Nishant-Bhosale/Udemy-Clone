@@ -6,6 +6,7 @@ import {
 	deleteInstructorProfile,
 	updateInstructorProfile,
 } from "../controllers/instructor.js";
+import { getInstructorCourses } from "../controllers/instructor.js";
 
 const router = express.Router();
 
@@ -18,5 +19,7 @@ router
 	.route("/profile/instructor/:id")
 	.put(authMiddleware, instructorMiddleware, updateInstructorProfile)
 	.delete(authMiddleware, instructorMiddleware, deleteInstructorProfile);
+
+router.route("/courses/all/:id").get(getInstructorCourses);
 
 export default router;
