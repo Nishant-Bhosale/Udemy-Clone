@@ -1,6 +1,7 @@
 import Instructor from "../models/Instructor.js";
 import asyncHandler from "express-async-handler";
 import Student from "../models/Student.js";
+import Course from "../models/Course.js";
 
 //@desc Get all instructors
 //@route /instructors
@@ -54,7 +55,6 @@ const updateInstructorProfile = asyncHandler(async (req, res) => {
 //@access Private
 const deleteInstructorProfile = asyncHandler(async (req, res) => {
 	const instructor = await Instructor.findByIdAndRemove(req.params.id);
-
 	const student = await Student.findById(req.student._id);
 
 	if (!student) {
@@ -64,8 +64,13 @@ const deleteInstructorProfile = asyncHandler(async (req, res) => {
 
 	student.isInstructor = false;
 
+	await Course.deleteMany({
+		createdBy: req.params.id,
+	});
+
 	await student.save();
 	await instructor.save();
+
 	if (instructor) {
 		res.status(200).json({ instructor });
 	} else {
