@@ -65,6 +65,7 @@ const deleteInstructorProfile = asyncHandler(async (req, res) => {
 	student.isInstructor = false;
 
 	await student.save();
+	await instructor.save();
 	if (instructor) {
 		res.status(200).json({ instructor });
 	} else {

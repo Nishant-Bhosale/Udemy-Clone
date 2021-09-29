@@ -35,6 +35,12 @@ const StudentSchema = new Schema(
 				ref: "Course",
 			},
 		],
+		wishList: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Course",
+			},
+		],
 		tokens: [
 			{
 				token: {

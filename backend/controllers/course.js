@@ -60,6 +60,7 @@ const createCourse = asyncHandler(async (req, res) => {
 	instructor.numberOfCourses++;
 
 	await instructor.save();
+	await req.student.save();
 	await course.save();
 
 	res.status(201).json({ course });
