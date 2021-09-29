@@ -16,13 +16,6 @@ const removeAllCourses = asyncHandler(async (req, res) => {
 //@ route /course/id/purchase
 //@ access Private
 const purchaseCourse = asyncHandler(async (req, res) => {
-	const course = await Course.findById(req.params.id);
-
-	if (!course) {
-		res.status(400);
-		throw new Error("Course not found.");
-	}
-
 	const alreadyPurchased = findCourseInPurchasedCourses(
 		req.student,
 		req.params.id,
@@ -31,6 +24,13 @@ const purchaseCourse = asyncHandler(async (req, res) => {
 	if (alreadyPurchased) {
 		res.status(404);
 		throw new Error("Cannot purchase course");
+	}
+
+	const course = await Course.findById(req.params.id);
+
+	if (!course) {
+		res.status(400);
+		throw new Error("Course not found.");
 	}
 
 	req.student.coursesTaken.push(course);

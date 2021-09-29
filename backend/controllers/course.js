@@ -56,6 +56,7 @@ const createCourse = asyncHandler(async (req, res) => {
 	});
 
 	instructor.courses.push(course._id);
+	req.student.coursesTaken.push(course._id);
 	instructor.numberOfCourses++;
 
 	await instructor.save();
