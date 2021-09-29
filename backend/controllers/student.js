@@ -40,4 +40,12 @@ const purchaseCourse = asyncHandler(async (req, res) => {
 	res.status(200).json({ message: "Course purchased successfully" });
 });
 
-export { purchaseCourse, removeAllCourses };
+//@ desc WishList a course
+//@ route /course/id/wishlist
+//@ access Private
+const wishListCourse = asyncHandler(async (req, res) => {
+	console.log(req.student.wishList);
+	console.log(req.params.id);
+});
+
+export { wishListCourse, purchaseCourse, removeAllCourses };

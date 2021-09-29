@@ -64,10 +64,6 @@ const deleteInstructorProfile = asyncHandler(async (req, res) => {
 
 	student.isInstructor = false;
 
-	await Course.deleteMany({
-		createdBy: req.params.id,
-	});
-
 	await student.save();
 	await instructor.save();
 

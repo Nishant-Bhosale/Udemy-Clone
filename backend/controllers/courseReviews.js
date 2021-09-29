@@ -40,6 +40,11 @@ const addReview = asyncHandler(async (req, res) => {
 
 	const instructor = await Instructor.findById(course.createdBy);
 
+	if (!instructor) {
+		res.status(404);
+		throw new Error("Instructor profile not found");
+	}
+
 	course.courseReviews.push(review);
 
 	course.avgRating =
