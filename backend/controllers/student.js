@@ -67,4 +67,4 @@ const wishListCourse = asyncHandler(async (req, res) => {
 	console.log(req.params.id);
 });
 
-export { wishListCourse, purchaseCourse, removeAllCourses };
+export { wishListCourse, purchaseCourse, removeAllCourses, refundCourse };
