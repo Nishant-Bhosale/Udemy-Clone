@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { findCourseInPurchasedCourses } from "../utils/helperFunctions.js";
 import Course from "../models/Course.js";
+import Student from "../models/Student.js";
 
 //@ desc Remove all courses
 //@ route /course/remove
@@ -38,6 +39,24 @@ const purchaseCourse = asyncHandler(async (req, res) => {
 	await req.student.save();
 
 	res.status(200).json({ message: "Course purchased successfully" });
+});
+
+//@ desc Refund a course
+//@ route /course/id/refund
+//@ access Private
+const refundCourse = asyncHandler(async (req, res) => {
+	const purchased = findCourseInPurchasedCourses(req.student, req.params.id);
+
+	if (!purchased) {
+		res.status(404);
+		throw new Error("Cannot refund course");
+	}
+
+	const student = await Student.findByIdAndUpdate(req.student._id, {
+		$pull: { coursesTaken: req.params.id },
+	});
+
+	res.status(200).json({ message: "Refund successful" });
 });
 
 //@ desc WishList a course

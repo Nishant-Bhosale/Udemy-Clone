@@ -27,7 +27,7 @@ const getInstructorProfile = asyncHandler(async (req, res) => {
 		res.status(200).json({ instructor });
 	} else {
 		res.status(404);
-		throw new Error("Could not find instructor");
+		throw new Error("Instructor profile not found");
 	}
 });
 
@@ -83,7 +83,11 @@ const getInstructorCourses = asyncHandler(async (req, res) => {
 		.populate({ path: "courses", select: "-createdBy" })
 		.exec();
 
-	console.log(instructor.courses);
+	if (!instructor) {
+		res.status(404);
+		throw new Error("Instructor not found.");
+	}
+
 	res.status(200).json({ courses: instructor.courses });
 });
 
