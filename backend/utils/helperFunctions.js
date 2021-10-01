@@ -6,14 +6,22 @@ const findCourseInPurchasedCourses = (student, id) => {
 	return res;
 };
 
-const findReviewedCourses = (course, id) => {
-	console.log(course);
-	console.log(id);
-	const res = course.courseReviews.find((review) => {
-		return review.user.toString() === id.toString();
+const findCourseInWishListCourses = (student, id) => {
+	const res = student.wishList.find((courseId) => {
+		return courseId.toString() === id.toString();
 	});
-	console.log(res);
 	return res;
 };
 
-export { findCourseInPurchasedCourses, findReviewedCourses };
+const findReviewedCourses = (course, id) => {
+	const res = course.courseReviews.find((review) => {
+		return review.user.toString() === id.toString();
+	});
+	return res;
+};
+
+export {
+	findCourseInPurchasedCourses,
+	findReviewedCourses,
+	findCourseInWishListCourses,
+};

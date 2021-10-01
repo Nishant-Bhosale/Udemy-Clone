@@ -1,5 +1,8 @@
 import asyncHandler from "express-async-handler";
-import { findCourseInPurchasedCourses } from "../utils/helperFunctions.js";
+import {
+	findCourseInPurchasedCourses,
+	findCourseInWishListCourses,
+} from "../utils/helperFunctions.js";
 import Course from "../models/Course.js";
 import Student from "../models/Student.js";
 
@@ -63,8 +66,20 @@ const refundCourse = asyncHandler(async (req, res) => {
 //@ route /course/id/wishlist
 //@ access Private
 const wishListCourse = asyncHandler(async (req, res) => {
-	console.log(req.student.wishList);
-	console.log(req.params.id);
+	const isWishListed = findCourseInWishListCourses(
+		req.student._id,
+		req.params.id,
+	);
+
+	if (isWishListed) {
+		res.status(404);
+		throw new Error("Could not wishlist course");
+	}
+
+	req.student.wishList.push(req.params.id);
+
+	await req.student.save();
+	res.status(200).json({ message: "Course wishlisted." });
 });
 
 export { wishListCourse, purchaseCourse, removeAllCourses, refundCourse };
