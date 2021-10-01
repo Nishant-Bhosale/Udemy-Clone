@@ -66,10 +66,7 @@ const refundCourse = asyncHandler(async (req, res) => {
 //@ route /course/id/wishlist
 //@ access Private
 const wishListCourse = asyncHandler(async (req, res) => {
-	const isWishListed = findCourseInWishListCourses(
-		req.student._id,
-		req.params.id,
-	);
+	const isWishListed = findCourseInWishListCourses(req.student, req.params.id);
 
 	if (isWishListed) {
 		res.status(404);
