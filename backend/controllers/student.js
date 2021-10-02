@@ -79,16 +79,25 @@ const wishListCourse = asyncHandler(async (req, res) => {
 	res.status(200).json({ message: "Course wishlisted." });
 });
 
-// const getWishListedCourses = asyncHandler(async (req, res) => {
-// 	console.log();
-// 	const wishListedCourses = await Student.findById(req.student._id.toString());
+const getWishListedCourses = asyncHandler(async (req, res) => {
+	const student = await Student.findById(req.student._id.toString())
+		.populate("wishList", [
+			"title",
+			"price",
+			"description",
+			"authorName",
+			"numOfStudents",
+			"avgRating",
+			"numOfRatings",
+		])
+		.exec();
 
-// 	res.status(200).json(wishListedCourses);
-// });
+	res.status(200).json(student.wishList);
+});
 
 export {
 	wishListCourse,
-	// getWishListedCourses,
+	getWishListedCourses,
 	purchaseCourse,
 	removeAllCourses,
 	refundCourse,
