@@ -29,7 +29,6 @@ const uploadImage = multer({
 });
 
 router.get("/courses", getAllCourses);
-router.route("/course/:id").get(getCourse);
 
 router
 	.route("/course")
@@ -43,5 +42,7 @@ router
 		uploadImage.single("upload"),
 		addCourseImage,
 	);
+
+router.route("/course/:id").get(getCourse);
 
 export default router;
