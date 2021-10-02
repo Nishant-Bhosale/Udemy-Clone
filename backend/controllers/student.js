@@ -95,9 +95,28 @@ const getWishListedCourses = asyncHandler(async (req, res) => {
 	res.status(200).json(student.wishList);
 });
 
+//@ desc Remove course from WishList
+//@ route /course/id/wishlist
+//@ access Private
+const removeCourseFromWishList = asyncHandler(async (req, res) => {
+	const wishListed = findCourseInWishListCourses(req.student, req.params.id);
+
+	if (!wishListed) {
+		res.status(404);
+		throw new Error("Cannot remove course");
+	}
+
+	const student = await Student.findByIdAndUpdate(req.student._id, {
+		$pull: { wishList: req.params.id },
+	});
+
+	res.status(200).json({ message: "Removed Successfully" });
+});
+
 export {
 	wishListCourse,
 	getWishListedCourses,
+	removeCourseFromWishList,
 	purchaseCourse,
 	removeAllCourses,
 	refundCourse,
