@@ -24,6 +24,12 @@ const getAllCourses = asyncHandler(async (req, res) => {
 		throw new Error("No courses found");
 	}
 
+	courses.forEach((course) => {
+		console.log(course.courseImage);
+		console.log(course.courseImage.data);
+		course.courseImage.data.toString("base64");
+	});
+
 	res.status(200).json({ courses });
 });
 
