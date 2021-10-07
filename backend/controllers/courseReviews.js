@@ -93,6 +93,9 @@ const deleteReview = asyncHandler(async (req, res) => {
 	res.status(200).json({ message: "Deleted Successfully" });
 });
 
+//@ desc Remove all reviews
+//@ route /course/reviews
+//@ access public for now
 const deleteAllReviews = asyncHandler(async (req, res) => {
 	const course = await Course.findById(req.params.id);
 
