@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function App() {
 	useEffect(() => {
-		axios.get('http://localhost:5000/courses').then((res) => {
+		axios.get('/courses').then((res) => {
 			console.log(res);
 		});
 	});
