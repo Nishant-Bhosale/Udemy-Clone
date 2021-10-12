@@ -1,6 +1,6 @@
-import Course from "../models/Course.js";
-import asyncHandler from "express-async-handler";
-import Instructor from "../models/Instructor.js";
+import Course from '../models/Course.js';
+import asyncHandler from 'express-async-handler';
+import Instructor from '../models/Instructor.js';
 
 //@ desc Get all courses
 //@ route /courses
@@ -21,14 +21,14 @@ const getAllCourses = asyncHandler(async (req, res) => {
 
 	if (courses.length === 0) {
 		res.status(400);
-		throw new Error("No courses found");
+		throw new Error('No courses found');
 	}
 
-	courses.forEach((course) => {
-		console.log(course.courseImage);
-		console.log(course.courseImage.data);
-		course.courseImage.data.toString("base64");
-	});
+	// courses.forEach((course) => {
+	// 	console.log(course.courseImage);
+	// 	console.log(course.courseImage.data);
+	// 	course.courseImage.data.toString("base64");
+	// });
 
 	res.status(200).json({ courses });
 });
@@ -41,14 +41,14 @@ const createCourse = asyncHandler(async (req, res) => {
 
 	if (price > 1000) {
 		res.status(400);
-		throw new Error("Price should be less than 1000");
+		throw new Error('Price should be less than 1000');
 	}
 
 	const instructor = await Instructor.findOne({ studentID: req.student._id });
 
 	if (!instructor) {
 		res.status(400);
-		throw new Error("Could not find Instructor");
+		throw new Error('Could not find Instructor');
 	}
 
 	const course = new Course({
@@ -80,13 +80,13 @@ const addCourseImage = asyncHandler(async (req, res) => {
 
 	if (course.courseImage) {
 		res.status(400);
-		throw new Error("Image already exists");
+		throw new Error('Image already exists');
 	}
 
 	course.courseImage = req.file.buffer;
 
 	await course.save();
-	res.status(201).json({ message: "Image added successfully." });
+	res.status(201).json({ message: 'Image added successfully.' });
 });
 
 //@ desc Get A specific course
@@ -94,18 +94,18 @@ const addCourseImage = asyncHandler(async (req, res) => {
 //@ access Public
 const getCourse = asyncHandler(async (req, res) => {
 	const course = await Course.findById(req.params.id)
-		.populate("createdBy", [
-			"name",
-			"profession",
-			"aboutMe",
-			"numberOfCourses",
-			"numberOfReviews",
+		.populate('createdBy', [
+			'name',
+			'profession',
+			'aboutMe',
+			'numberOfCourses',
+			'numberOfReviews',
 		]) // 2nd argument is to return specified elements of the object
 		.exec();
 
 	if (!course) {
 		res.status(400);
-		throw new Error("Could not find course");
+		throw new Error('Could not find course');
 	}
 
 	res.status(200).json({ course });
